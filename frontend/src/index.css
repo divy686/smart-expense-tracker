@@ -1,0 +1,36 @@
+
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  background: linear-gradient(
+    135deg,
+    #eef6f2,
+    #f6f8fb
+  );
+  color: #1C372A;
+  font-family: 'IBM Plex Sans', sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+.btn-primary {
+  @apply bg-primary text-white px-4 py-2 rounded-md hover:opacity-90 transition font-medium;
+}
+.btn-ghost {
+  @apply border border-border bg-white px-4 py-2 rounded-md hover:bg-bg transition;
+}
+.input {
+  @apply w-full border border-border bg-white px-3 py-2 rounded-md focus:outline-none focus:border-primary transition;
+}
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
