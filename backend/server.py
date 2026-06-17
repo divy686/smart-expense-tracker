@@ -1,6 +1,6 @@
 
 from dotenv import load_dotenv
-load_dotenv()  # .env file load karta hai
+load_dotenv()  
 
 import os
 import uuid
@@ -358,6 +358,6 @@ app.add_middleware(
 async def startup():
     await db.users.create_index("email", unique=True)
     await db.expenses.create_index([("user_id", 1), ("date", -1)])
-    print("✅ Server started, DB indexes created")
+    print(" Server started, DB indexes created")
 
 logging.basicConfig(level=logging.INFO)
