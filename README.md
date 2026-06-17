@@ -257,6 +257,24 @@ Handles new user registration.
 * Authentication and Authorization
 * Expense Analytics and Reporting
 
+
+---
+
+
+## Screenshots
+
+### Dashboard
+![Dashboard](screenshots/dashboard.png)
+
+### Expenses
+![Expenses](screenshots/expenses.png)
+
+### AI Insights
+![Insights](screenshots/insights.png)
+
+
+
+
 ---
 
 ## Author
