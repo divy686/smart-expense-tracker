@@ -7,7 +7,7 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Page load pe check karo user logged in hai ya nahi
+  
   useEffect(() => {
     API.get("/auth/me")
       .then((r) => setUser(r.data))
