@@ -26,7 +26,7 @@ export default function Insights() {
          <Sparkles className="text-cyan-500" />
          AI Financial Advisor
          </h2>
-      <p className="text-muted mb-8">Powered by Groq AI (Llama 3.3 70B)</p>
+      
 
       <div className="card mb-6">
         <input
