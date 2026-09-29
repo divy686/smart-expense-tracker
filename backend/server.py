@@ -141,7 +141,14 @@ async def register(req: RegisterRequest, response: Response):
     await db.users.insert_one(user_doc)
     
     token = create_access_token(user_id, email)
-    response.set_cookie("access_token", token, httponly=True, max_age=604800)
+    response.set_cookie(
+    "access_token",
+    token,
+    httponly=True,
+    max_age=604800,
+    secure=True,
+    samesite="none"
+)
     return {"id": user_id, "email": email, "name": req.name}
 
 
@@ -153,7 +160,14 @@ async def login(req: LoginRequest, response: Response):
         raise HTTPException(401, "Invalid email or password")
     
     token = create_access_token(user["id"], email)
-    response.set_cookie("access_token", token, httponly=True, max_age=604800)
+    response.set_cookie(
+    "access_token",
+    token,
+    httponly=True,
+    max_age=604800,
+    secure=True,
+    samesite="none"
+)
     return {"id": user["id"], "email": email, "name": user["name"]}
 
 
