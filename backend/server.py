@@ -329,7 +329,7 @@ async def ai_insights(req: AIRequest, user: dict = Depends(get_current_user)):
     summary = {"category_totals": dict(cat_totals), "recent": expenses[:20]}
     
     response = groq_client.chat.completions.create(
-        model="llama-3.3-70b-versatile",  # FREE, fast
+        model="openai/gpt-oss-120b",  # FREE, fast
         messages=[
             {"role": "system", "content": "You are a personal finance assistant. Give 3-5 concise actionable insights with markdown bullets."},
             {"role": "user", "content": f"Analyze: {json.dumps(summary, default=str)}\n\nQuestion: {req.question or 'general insights'}"},
