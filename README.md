@@ -1,5 +1,10 @@
 # Smart Expense Tracker with Predictive Insights
 
+## Live Demo
+
+[🚀 Live Demo](https://smart-expense-tracker-two-weld.vercel.app/)
+
+
 ## Overview
 
 Smart Expense Tracker with Predictive Insights is a full-stack expense management web application that helps users track expenses, manage budgets, visualize spending patterns, and receive AI-powered financial recommendations. The platform provides an intuitive dashboard, budget alerts, expense analytics, PDF report generation, and intelligent spending insights.
@@ -72,7 +77,7 @@ Smart Expense Tracker with Predictive Insights is a full-stack expense managemen
 ### AI Integration
 
 * Groq API
-* Llama 3 Model
+* openai/gpt-oss-120b
 
 ### Tools
 
