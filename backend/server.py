@@ -22,12 +22,12 @@ import jwt
 
 
 
-# MongoDB connection
+
 mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
-# Config
+
 JWT_SECRET = os.environ['JWT_SECRET']
 JWT_ALGORITHM = "HS256"
 groq_client = Groq(api_key=os.environ['GROQ_API_KEY'])
@@ -39,25 +39,23 @@ EXPENSE_CATEGORIES = [
     "Education", "Other"
 ]
 
-# FastAPI app
+
 app = FastAPI(title="Smart Expense Tracker API")
 api_router = APIRouter(prefix="/api")
 
 
-# ============================================
-# SECTION 2: AUTH UTILITIES
-# ============================================
+
 def hash_password(password: str) -> str:
-    """Password ko bcrypt se hash karta hai"""
+    
     salt = bcrypt.gensalt()
     return bcrypt.hashpw(password.encode(), salt).decode()
 
 def verify_password(plain: str, hashed: str) -> bool:
-    """Plain password ko hashed se compare karta hai"""
+    
     return bcrypt.checkpw(plain.encode(), hashed.encode())
 
 def create_access_token(user_id: str, email: str) -> str:
-    """JWT token banata hai (7 days valid)"""
+    
     payload = {
         "sub": user_id,
         "email": email,
@@ -66,8 +64,8 @@ def create_access_token(user_id: str, email: str) -> str:
     return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
 
 async def get_current_user(request: Request) -> dict:
-    """Har protected route me ye dependency lagti hai"""
-    # Pehle cookie check karo, phir Authorization header
+
+    
     token = request.cookies.get("access_token")
     if not token:
         auth = request.headers.get("Authorization", "")
@@ -91,9 +89,6 @@ async def get_current_user(request: Request) -> dict:
         raise HTTPException(401, "Invalid token")
 
 
-# ============================================
-# SECTION 3: PYDANTIC MODELS (Data Validation)
-# ============================================
 class RegisterRequest(BaseModel):
     email: EmailStr
     password: str = Field(min_length=6)
@@ -120,9 +115,7 @@ class BudgetSet(BaseModel):
     monthly_limit: float = Field(ge=0)
 
 
-# ============================================
-# SECTION 4: AUTH ROUTES
-# ============================================
+
 @api_router.post("/auth/register")
 async def register(req: RegisterRequest, response: Response):
     email = req.email.lower()
@@ -182,9 +175,7 @@ async def me(user: dict = Depends(get_current_user)):
     return user
 
 
-# ============================================
-# SECTION 5: EXPENSE ROUTES (CRUD)
-# ============================================
+
 @api_router.get("/categories")
 async def get_categories():
     return {"categories": EXPENSE_CATEGORIES}
@@ -252,9 +243,7 @@ async def delete_expense(expense_id: str, user: dict = Depends(get_current_user)
     return {"ok": True}
 
 
-# ============================================
-# SECTION 6: BUDGET ROUTES
-# ============================================
+
 @api_router.get("/budgets")
 async def list_budgets(user: dict = Depends(get_current_user)):
     cursor = db.budgets.find({"user_id": user["id"]}, {"_id": 0})
@@ -284,12 +273,10 @@ async def set_budget(req: BudgetSet, user: dict = Depends(get_current_user)):
     return doc
 
 
-# ============================================
-# SECTION 7: STATS & AI INSIGHTS
-# ============================================
+
 @api_router.get("/stats/summary")
 async def stats_summary(user: dict = Depends(get_current_user)):
-    """Dashboard ke liye summary banata hai"""
+    
     cursor = db.expenses.find({"user_id": user["id"]}, {"_id": 0})
     expenses = [doc async for doc in cursor]
     
@@ -305,7 +292,7 @@ async def stats_summary(user: dict = Depends(get_current_user)):
             current_total += e["amount"]
             category_totals[e["category"]] += e["amount"]
     
-    # Forecast: current daily avg × 30
+    
     day = datetime.now(timezone.utc).day
     projected = (current_total / day * 30) if day > 0 else 0
     
@@ -352,9 +339,7 @@ async def ai_insights(req: AIRequest, user: dict = Depends(get_current_user)):
     )
     
     return {"insights": response.choices[0].message.content}
-# ============================================
-# FINAL: Mount router & CORS
-# ============================================
+
 app.include_router(api_router)
 
 app.add_middleware(
